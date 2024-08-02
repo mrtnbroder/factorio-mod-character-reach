@@ -1,7 +1,8 @@
 local name_prefix = "theis_character-reach-indicator"
 
-local WHITE = {0.8,0.8,0.8,0.5}
-local GREEN = {0,0.3,0,0.2}
+local name_interaction = name_prefix.."_interaction-circle-color"
+local name_mining = name_prefix.."_mining-circle-color"
+local name_pickup = name_prefix.."_pickup-circle-color"
 
 ---Draws a circle around the player
 ---@param player LuaPlayer
@@ -38,14 +39,23 @@ local function create_circles(player_index)
     local reach_distance = player.reach_distance
     local resource_reach_distance = player.resource_reach_distance
     local item_pickup_distance = player.item_pickup_distance
+    global.players_color_refs = global.players_color_refs or {}
+    if not global.players_color_refs[player_index] then
+        local setting = settings.get_player_settings(player_index)
+        global.players_color_refs[player_index] = {
+            setting[name_interaction].value,
+            setting[name_mining].value,
+            setting[name_pickup].value,
+        }
+    end
     global.players_refs[player_index] = {
         player = player,
         reach_distance = reach_distance,
         resource_reach_distance = resource_reach_distance,
         item_pickup_distance = item_pickup_distance,
-        large  = draw_circle(player, reach_distance, WHITE, false),
-        medium = draw_circle(player, resource_reach_distance, WHITE, false),
-        small  = draw_circle(player, item_pickup_distance, GREEN, true),
+        large  = draw_circle(player, reach_distance, global.players_color_refs[player_index][1], false),
+        medium = draw_circle(player, resource_reach_distance, global.players_color_refs[player_index][2], false),
+        small  = draw_circle(player, item_pickup_distance, global.players_color_refs[player_index][3], true),
     }
 end
 
@@ -129,6 +139,36 @@ local function on_player_removed(event)
     end
 end
 
+---Handling of changing the color of the player's circles
+---@param event EventData.on_runtime_mod_setting_changed
+local function on_setting_change(event)
+    local player_index = event.player_index
+    if not player_index then return end
+    local player = game.get_player(player_index)
+    if not player or event.setting_type ~= "runtime-per-user" then return end
+
+    local settings_lookup = {
+        [name_interaction] = 1,
+        [name_mining] = 2,
+        [name_pickup] = 3,
+    }
+    local setting_index = settings_lookup[event.setting]
+    if not setting_index then return end
+
+    global.players_color_refs = global.players_color_refs or {}
+    if not global.players_color_refs[player_index] then
+        local setting = settings.get_player_settings(player_index)
+        global.players_color_refs[player_index] = {
+            setting[name_interaction].value,
+            setting[name_mining].value,
+            setting[name_pickup].value,
+        }
+    else
+        global.players_color_refs[player_index][setting_index] = settings.get_player_settings(player_index)[event.setting].value
+    end
+    recreate_circles(player_index)
+end
+
 local next = next
 
 ---@param event NthTickEventData
@@ -164,6 +204,8 @@ script.on_event(defines.events.on_forces_merged, force_modified)
 script.on_event(defines.events.on_player_joined_game, on_player_joined_game)
 --script.on_event(defines.events.on_player_left_game, on_player_left_game)
 script.on_event(defines.events.on_player_removed, on_player_removed)
+
+script.on_event(defines.events.on_runtime_mod_setting_changed, on_setting_change)
 
 script.on_event(defines.events.on_player_toggled_map_editor, on_player_joined_game)
 
