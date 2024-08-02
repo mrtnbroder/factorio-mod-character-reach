@@ -3,6 +3,7 @@ Version: 1.0.0
 Date: 2024-08-02
   Changes:
     - Fixed toggle circles not toggling on keybinding
+    - Fixed circles updating each pass due to using wrong comparison value
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.0
 Date: 2024-01-04

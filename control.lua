@@ -86,7 +86,7 @@ local function change_circle_range(event)
     local item = global.players_refs[event.player_index]
     local player = item.player
     if player.reach_distance ~= item.reach_distance or
-        player.resource_reach_distance ~= item.item_pickup_distance or
+        player.resource_reach_distance ~= item.resource_reach_distance or
         player.item_pickup_distance ~= item.item_pickup_distance
     then
         recreate_circles(event.player_index)
@@ -109,6 +109,7 @@ end
 ---@param event EventData.on_player_joined_game | EventData.on_player_toggled_map_editor
 local function on_player_joined_game(event)
     local player = game.get_player(event.player_index)
+    if not player then return end
     if player.controller_type == defines.controllers.character and
         global.players_refs[event.player_index]
     then
