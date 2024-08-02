@@ -50,10 +50,11 @@ local function create_circles(player_index)
 end
 
 ---Toggles circles for the player clicking the tool
----@param event EventData.on_lua_shortcut
+---@param event EventData.on_lua_shortcut | EventData.CustomInputEvent
 local function toggle_circles(event)
     local name = name_prefix.."_toggle"
-    if event.prototype_name ~= name then return end
+    local event_name = event.input_name or event.prototype_name
+    if event_name ~= name_prefix.."_toggle-control" and event_name ~= name then return end
     local player = game.get_player(event.player_index)
     if not player or player.controller_type ~= defines.controllers.character then return end
 
@@ -151,6 +152,7 @@ local function on_nth_tick_10(event)
 end
 
 script.on_event(defines.events.on_lua_shortcut, toggle_circles)
+script.on_event("theis_character-reach-indicator_toggle-control", toggle_circles)
 script.on_event(defines.events.on_player_changed_surface, move_circles)
 
 script.on_event(defines.events.on_player_changed_force, change_circle_range)
