@@ -14,7 +14,7 @@ local function draw_circle(player, radius, color, is_filled)
     return rendering.draw_circle{
         color = color,
         radius = radius,
-        width = 2,
+        --width = 2,
         filled = is_filled,
         target = player.character,
         surface = player.surface,
