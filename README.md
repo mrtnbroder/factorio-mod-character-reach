@@ -13,7 +13,9 @@ Adds a tool to your toolbar, when toggled on this will show 3 circles around you
 
 #### Interaction with entities
 In Factorio every entity has a selection rectangle and a collision rectangle. The Collision rectangle is the one being used for determining if you can interact with the entity.
+
 ![Collision rectangle image](https://assets-mod.factorio.com/assets/20b8271fe20b25f2b723629335496915b2accd8a.thumb.png)
+
 As seen above, while the __selection rectangle__ of the tree is partially inside the character's _resource reach distance_ the whole of the __collision rectangle__ is outside, which means you can't reach the tree.
 
 Collision rectangles can be shown using: 
