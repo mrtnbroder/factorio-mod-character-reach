@@ -64,23 +64,25 @@ end
 ---Toggles circles for the player clicking the tool
 ---@param event EventData.on_lua_shortcut | EventData.CustomInputEvent
 local function toggle_circles(event)
-  local name = NAME .. "-toggle"
-  local event_name = event.input_name or event.prototype_name
-  if event_name ~= NAME .. "-toggle-control" and event_name ~= name then
-    return
-  end
-  local player = game.get_player(event.player_index)
-  if not player or player.controller_type ~= defines.controllers.character then
-    return
-  end
+  log("toggle_circles")
+  log(event.input_name or event.prototype_name)
+  -- local name = NAME .. "-toggle"
+  -- local event_name = event.input_name or event.prototype_name
+  -- if event_name ~= NAME .. "-toggle-control" and event_name ~= name then
+  --   return
+  -- end
+  -- local player = game.get_player(event.player_index)
+  -- if not player or player.controller_type ~= defines.controllers.character then
+  --   return
+  -- end
 
-  if storage.players_refs[event.player_index] then
-    destroy_circles(event.player_index)
-    player.set_shortcut_toggled(name, false)
-  else
-    create_circles(event.player_index)
-    player.set_shortcut_toggled(name, true)
-  end
+  -- if storage.players_refs[event.player_index] then
+  --   destroy_circles(event.player_index)
+  --   player.set_shortcut_toggled(name, false)
+  -- else
+  --   create_circles(event.player_index)
+  --   player.set_shortcut_toggled(name, true)
+  -- end
 end
 
 ---@param player_index integer
@@ -134,9 +136,9 @@ local function on_player_joined_game(event)
   end
 end
 
---[[-@param event EventData.on_player_left_game
+--[[ ---@param event EventData.on_player_left_game
 local function on_player_left_game(event)
-end]]
+end ]]
 
 ---@param event EventData.on_player_removed
 local function on_player_removed(event)
@@ -183,7 +185,6 @@ local next = next
 
 ---@param event NthTickEventData
 local function on_nth_tick_10(event)
-  local storage = storage -- Micro optimization.
   local player_refs = storage.players_refs
   local current_player_index = storage.current_player_index
   if not player_refs[current_player_index] then
@@ -203,7 +204,7 @@ local function on_nth_tick_10(event)
 end
 
 script.on_event(defines.events.on_lua_shortcut, toggle_circles)
--- script.on_event(NAME .. "-toggle-control", toggle_circles)
+script.on_event(NAME .. "-toggle", toggle_circles)
 script.on_event(defines.events.on_player_changed_surface, move_circles)
 
 script.on_event(defines.events.on_player_changed_force, change_circle_range)
