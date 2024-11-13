@@ -1,9 +1,10 @@
 {
-	"name": "character_reach_indicator",
-	"version": "1.0.1",
-	"title": "Character reach indicator",
-	"author": "Theis",
-	"factorio_version": "1.1",
+	"name": "zytegeist-character-reach",
+	"version": "0.1.0",
+	"title": "Draws the character reach distance",
+	"author": "zytegeist",
+	"factorio_version": "2.0",
 	"contact": "",
-	"description": "Tool for aiding with finding your characters reach potential"
+	"description": "Draws the character reach distance, useful for debugging e.g. TAS scripts",
+  "dependencies": ["base >= 2.0.0"]
 }

@@ -1,29 +1,19 @@
-SETTING_NAME = "theis_character-reach-indicator_"
+require('core.constants')
+require('core.settings')
 
-data:extend(
-{
-  {
+local function create_color_setting(name, default_value, order)
+  return {
+    name = NAME .. name,
+    default_value = default_value,
+    order = order,
     type = "color-setting",
-    name = SETTING_NAME.."interaction-circle-color",
     setting_type = "runtime-per-user",
-    default_value = {1,1,1,0.8},
-    allow_blank = true,
-    order = "q1",
-  },
-  {
-    type = "color-setting",
-    name = SETTING_NAME.."mining-circle-color",
-    setting_type = "runtime-per-user",
-    default_value = {239,33,36,199},
-    allow_blank = true,
-    order = "q2",
-  },
-  {
-    type = "color-setting",
-    name = SETTING_NAME.."pickup-circle-color",
-    setting_type = "runtime-per-user",
-    default_value = {0,0.3,0,0.2},
-    allow_blank = true,
-    order = "q3",
-  },
-})
+    allow_blank = true
+  }
+end
+
+for name, setting in ipairs(defines[NAME].settings) do
+  local option = create_color_setting(name, setting.default_value, setting.order)
+
+  data:extend{option}
+end
