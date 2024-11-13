@@ -75,12 +75,12 @@ local function toggle_circles(event)
   if not player or player.controller_type ~= defines.controllers.character then
     return
   end
-
+  log("[INFO]: ", storage.players_refs[event.player_index])
   if storage.players_refs[event.player_index] then
-    destroy_circles(event.player_index)
+    -- destroy_circles(event.player_index)
     player.set_shortcut_toggled(name, false)
   else
-    create_circles(event.player_index)
+    -- create_circles(event.player_index)
     player.set_shortcut_toggled(name, true)
   end
 end
