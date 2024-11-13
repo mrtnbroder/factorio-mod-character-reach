@@ -64,25 +64,25 @@ end
 ---Toggles circles for the player clicking the tool
 ---@param event EventData.on_lua_shortcut | EventData.CustomInputEvent
 local function toggle_circles(event)
-  log("toggle_circles")
+  -- -- log("toggle_circles")
   log(event.input_name or event.prototype_name)
-  -- local name = NAME .. "-toggle"
-  -- local event_name = event.input_name or event.prototype_name
-  -- if event_name ~= NAME .. "-toggle-control" and event_name ~= name then
-  --   return
-  -- end
-  -- local player = game.get_player(event.player_index)
-  -- if not player or player.controller_type ~= defines.controllers.character then
-  --   return
-  -- end
+  local name = NAME .. "-toggle"
+  local event_name = event.input_name or event.prototype_name
+  if event_name ~= NAME .. "-toggle-control" and event_name ~= name then
+    return
+  end
+  local player = game.get_player(event.player_index)
+  if not player or player.controller_type ~= defines.controllers.character then
+    return
+  end
 
-  -- if storage.players_refs[event.player_index] then
-  --   destroy_circles(event.player_index)
-  --   player.set_shortcut_toggled(name, false)
-  -- else
-  --   create_circles(event.player_index)
-  --   player.set_shortcut_toggled(name, true)
-  -- end
+  if storage.players_refs[event.player_index] then
+    destroy_circles(event.player_index)
+    player.set_shortcut_toggled(name, false)
+  else
+    create_circles(event.player_index)
+    player.set_shortcut_toggled(name, true)
+  end
 end
 
 ---@param player_index integer
