@@ -1,8 +1,8 @@
 require('core.constants')
 
-local name_interaction = NAME .. "-interaction"
-local name_mining = NAME .. "-mining"
-local name_pickup = NAME .. "-pickup"
+local name_interaction = NAME .. "_interaction-circle-color"
+local name_mining = NAME .. "_mining-circle-color"
+local name_pickup = NAME .. "_pickup-circle-color"
 
 ---Draws a circle around the player
 ---@param player LuaPlayer
