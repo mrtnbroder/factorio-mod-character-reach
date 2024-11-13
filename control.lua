@@ -1,8 +1,8 @@
-require('core.constants')
+require("core.constants")
 
-local name_interaction = NAME .. "_interaction-circle-color"
-local name_mining = NAME .. "_mining-circle-color"
-local name_pickup = NAME .. "_pickup-circle-color"
+local name_interaction = NAME .. "-interaction-circle-color"
+local name_mining = NAME .. "-mining-circle-color"
+local name_pickup = NAME .. "-pickup-circle-color"
 
 ---Draws a circle around the player
 ---@param player LuaPlayer
@@ -11,9 +11,7 @@ local name_pickup = NAME .. "_pickup-circle-color"
 ---@param is_filled boolean
 ---@return integer rendering_id
 local function draw_circle(player, radius, color, is_filled)
-  if not player.character or not player.surface then
-    return 0
-  end
+  if not player.character or not player.surface then return 0 end
   return rendering.draw_circle {
     color = color,
     radius = radius,
@@ -21,7 +19,7 @@ local function draw_circle(player, radius, color, is_filled)
     filled = is_filled,
     target = player.character,
     surface = player.surface,
-    players = {player.index},
+    players = { player.index },
     draw_on_ground = true
   }
 end
@@ -37,9 +35,7 @@ end
 
 local function create_circles(player_index)
   local player = game.get_player(player_index)
-  if not player then
-    return
-  end
+  if not player then return end
 
   local reach_distance = player.reach_distance
   local resource_reach_distance = player.resource_reach_distance
@@ -47,8 +43,9 @@ local function create_circles(player_index)
   storage.players_color_refs = storage.players_color_refs or {}
   if not storage.players_color_refs[player_index] then
     local setting = settings.get_player_settings(player_index)
-    storage.players_color_refs[player_index] = {setting[name_interaction].value, setting[name_mining].value,
-      setting[name_pickup].value}
+    storage.players_color_refs[player_index] = {
+      setting[name_interaction].value, setting[name_mining].value, setting[name_pickup].value
+    }
   end
   storage.players_refs[player_index] = {
     player = player,
@@ -66,13 +63,9 @@ end
 local function toggle_circles(event)
   local name = NAME .. "-toggle"
   local event_name = event.input_name or event.prototype_name
-  if event_name ~= NAME .. "-toggle-control" and event_name ~= name then
-    return
-  end
+  if event_name ~= NAME .. "-toggle-control" and event_name ~= name then return end
   local player = game.get_player(event.player_index)
-  if not player or player.controller_type ~= defines.controllers.character then
-    return
-  end
+  if not player or player.controller_type ~= defines.controllers.character then return end
   if storage.players_refs[event.player_index] then
     -- destroy_circles(event.player_index)
     player.set_shortcut_toggled(name, false)
@@ -97,15 +90,11 @@ end
 
 ---@param event EventData.on_player_changed_force
 local function change_circle_range(event)
-  if not storage.players_refs[event.player_index] then
-    return
-  end
+  if not storage.players_refs[event.player_index] then return end
   local item = storage.players_refs[event.player_index]
   local player = item.player
   if player.reach_distance ~= item.reach_distance or player.resource_reach_distance ~= item.resource_reach_distance or
-    player.item_pickup_distance ~= item.item_pickup_distance then
-    recreate_circles(event.player_index)
-  end
+    player.item_pickup_distance ~= item.item_pickup_distance then recreate_circles(event.player_index) end
 end
 
 ---@param event EventData.on_force_reset | EventData.on_forces_merged
@@ -124,9 +113,7 @@ end
 ---@param event EventData.on_player_joined_game | EventData.on_player_toggled_map_editor
 local function on_player_joined_game(event)
   local player = game.get_player(event.player_index)
-  if not player then
-    return
-  end
+  if not player then return end
   if player.controller_type == defines.controllers.character and storage.players_refs[event.player_index] then
     create_circles(event.player_index)
     player.set_shortcut_toggled(NAME .. "-toggle", true)
@@ -139,38 +126,31 @@ end ]]
 
 ---@param event EventData.on_player_removed
 local function on_player_removed(event)
-  if storage.players_refs[event.player_index] then
-    destroy_circles(event.player_index)
-  end
+  if storage.players_refs[event.player_index] then destroy_circles(event.player_index) end
 end
 
 ---Handling of changing the color of the player's circles
 ---@param event EventData.on_runtime_mod_setting_changed
 local function on_setting_change(event)
   local player_index = event.player_index
-  if not player_index then
-    return
-  end
+  if not player_index then return end
   local player = game.get_player(player_index)
-  if not player or event.setting_type ~= "runtime-per-user" then
-    return
-  end
+  if not player or event.setting_type ~= "runtime-per-user" then return end
 
   local settings_lookup = {
     [name_interaction] = 1,
     [name_mining] = 2,
     [name_pickup] = 3
-  }
+   }
   local setting_index = settings_lookup[event.setting]
-  if not setting_index then
-    return
-  end
+  if not setting_index then return end
 
   storage.players_color_refs = storage.players_color_refs or {}
   if not storage.players_color_refs[player_index] then
     local setting = settings.get_player_settings(player_index)
-    storage.players_color_refs[player_index] = {setting[name_interaction].value, setting[name_mining].value,
-      setting[name_pickup].value}
+    storage.players_color_refs[player_index] = {
+      setting[name_interaction].value, setting[name_mining].value, setting[name_pickup].value
+    }
   else
     storage.players_color_refs[player_index][setting_index] =
       settings.get_player_settings(player_index)[event.setting].value
@@ -184,9 +164,7 @@ local next = next
 local function on_nth_tick_10(event)
   local player_refs = storage.players_refs
   local current_player_index = storage.current_player_index
-  if not player_refs[current_player_index] then
-    current_player_index = nil
-  end
+  if not player_refs[current_player_index] then current_player_index = nil end
   local refs
   current_player_index, refs = next(player_refs, current_player_index)
   storage.current_player_index = current_player_index
