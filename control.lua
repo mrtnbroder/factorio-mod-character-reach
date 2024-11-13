@@ -26,9 +26,9 @@ end
 
 local function destroy_circles(player_index)
   if storage.players_refs[player_index] then
-    rendering.destroy(storage.players_refs[player_index].large)
-    rendering.destroy(storage.players_refs[player_index].medium)
-    rendering.destroy(storage.players_refs[player_index].small)
+    storage.players_refs[player_index].large.destroy()
+    storage.players_refs[player_index].medium.destroy()
+    storage.players_refs[player_index].small.destroy()
     storage.players_refs[player_index] = nil
   end
 end
