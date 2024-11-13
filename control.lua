@@ -204,7 +204,7 @@ local function on_nth_tick_10(event)
 end
 
 script.on_event(defines.events.on_lua_shortcut, toggle_circles)
-script.on_event(NAME .. "-toggle", toggle_circles)
+script.on_event(NAME .. "-toggle-control", toggle_circles)
 script.on_event(defines.events.on_player_changed_surface, move_circles)
 
 script.on_event(defines.events.on_player_changed_force, change_circle_range)
