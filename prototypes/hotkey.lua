@@ -1,7 +1,7 @@
 local function create_hotkey(name, key_sequence, alternative_key_sequence)
   return {
     type = "custom-input",
-    name = NAME .. "-" .. name,
+    name = NAME .. "-" .. name .. "-control",
     key_sequence = key_sequence,
     alternative_key_sequence = alternative_key_sequence,
     consuming = "game-only"
