@@ -1,7 +1,7 @@
 local EventController = {}
 
 function EventController.setup()
-  EventController.pcall_event(defines.events.on_init, EventController.on_init)
+  script.on_init(EventController.on_init)
 
   EventController.pcall_event(defines.events.on_player_joined_game, EventController.on_player_joined_game)
   EventController.pcall_event(defines.events.on_player_left_game, EventController.on_player_left_game)
@@ -9,6 +9,7 @@ function EventController.setup()
   -- EventController.pcall_event(defines.events.on_player_changed_surface, EventController.on_player_changed_surface)
   -- EventController.pcall_event(defines.events.on_player_changed_force, EventController.on_player_changed_force)
   -- EventController.pcall_event(defines.events.on_player_created, EventController.on_player_created)
+  EventController.pcall_event(NAME .. "-toggle-control", EventController.on_lua_shortcut)
   EventController.pcall_event(defines.events.on_lua_shortcut, EventController.on_lua_shortcut)
 
   -- EventController.pcall_event(defines.events.on_force_reset, EventController.on_force_reset)
@@ -20,7 +21,6 @@ function EventController.setup()
 
   EventController.pcall_event(defines.events.on_player_toggled_map_editor, EventController.on_player_toggled_map_editor)
 
-  -- script.on_event(NAME .. "-toggle-control", toggle_circles)
 
   EventController.pcall_nth_tick(10, EventController.on_nth_tick_10)
 
