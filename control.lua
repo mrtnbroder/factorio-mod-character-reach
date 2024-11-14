@@ -1,4 +1,8 @@
 require("core.constants")
+require("core.logger")
+EventController = require("controller.events")
+
+EventController.setup()
 
 local name_interaction = NAME .. "-interaction-circle-color"
 local name_mining = NAME .. "-mining-circle-color"
@@ -177,6 +181,8 @@ local function on_nth_tick_10(event)
     })
   end
 end
+
+
 
 script.on_event(defines.events.on_lua_shortcut, toggle_circles)
 script.on_event(NAME .. "-toggle-control", toggle_circles)
