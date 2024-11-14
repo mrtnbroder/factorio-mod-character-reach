@@ -1,5 +1,5 @@
 Logger = {
-  level = 1,
+  level = 3,
   log_levels = {
     none = 0,
     error = 1,
