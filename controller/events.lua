@@ -11,7 +11,7 @@ function EventController.pcall_event(event_type, callback)
     script.on_event(event_type, callback)
   end)
   if not (ok) then
-    Logger:info("Defined event " .. event_type .. " is not valid!")
+    Logger:warn(event_type .. " is not valid!")
     Logger:error(err)
   end
 end
