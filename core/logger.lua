@@ -35,7 +35,7 @@ local function objectToString(value, level)
       if lua_type == "LuaCustomTable" then
         local custom_table = {}
         for _, element in pairs(value) do table.insert(custom_table, element) end
-        return self:objectToString(custom_table, level)
+        return objectToString(custom_table, level)
       elseif string.find(lua_type, "Lua") then
         local object_name = "unknown"
         pcall(function()
@@ -104,7 +104,7 @@ function Logger:log(tag, message, ...)
   local _arg = { ... }
   local _message = message
 
-  for _, value in ipairs(_arg) do _message = _message .. objectToString(value) end
+  for _, value in ipairs(_arg) do _message = _message .. " " .. objectToString(value) end
 
   log(string.format("%s: %s", tag, _message))
 end
